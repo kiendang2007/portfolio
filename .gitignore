@@ -1,0 +1,16 @@
+# Design source files (reference only, not used by the site)
+design/
+
+# Original full-size portrait; the site uses assets/img/kien-900.jpg
+assets/img/kien.jpg
+
+# Content notes used to write the site, not served by it
+content.md
+
+# OS and editor clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
