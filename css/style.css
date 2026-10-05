@@ -1,5 +1,5 @@
 /* =========================================================
-   Stoa Poikile — The Painted Porch
+   Stoa Poikile: The Painted Porch
    Marble and terracotta. Black-figure silhouettes, incised lines.
    ========================================================= */
 
@@ -122,7 +122,7 @@ button { font: inherit; }
 .nav__active { display: none; }
 
 /* =========================================================
-   01 Prologos — the facade (desktop)
+   01 Prologos: the facade (desktop)
    ========================================================= */
 .hero { position: relative; height: max(860px, 100vh); overflow: hidden; }
 
@@ -187,7 +187,7 @@ button { font: inherit; }
 .pinax figcaption span { width: 22px; height: 1px; background: var(--ink); }
 
 /* =========================================================
-   02 Stoa Poikile — base (mobile / no-JS): the vertical walk
+   02 Stoa Poikile: base (mobile / no-JS): the vertical walk
    ========================================================= */
 .porch { position: relative; padding: 72px 54px; }
 .porch::before, .porch::after {
@@ -231,7 +231,7 @@ button { font: inherit; }
 .panel.is-lit .panel__dot { background: var(--ochre); }
 .panel__title { font-family: var(--didot); font-weight: 400; font-size: 28px; line-height: 1.1; margin: 10px 0 6px; }
 .panel__line { font-size: 15px; line-height: 1.5; margin: 0; }
-.panel__quote { font-style: italic; font-size: 13px; line-height: 1.5; margin: 8px 0 0; color: var(--muted); }
+.panel__quote { font-style: italic; font-size: 14px; line-height: 1.5; margin: 8px 0 0; color: var(--muted); }
 .panel__quote span { font-style: normal; font-family: var(--sc); letter-spacing: .06em; }
 .panel__open { margin-top: 14px; width: 100%; min-height: 44px; }
 
@@ -253,7 +253,7 @@ button { font: inherit; }
 /* ---------- Motion mode: the pinned porch walk ---------- */
 [data-mode="motion"] .porch { padding: 0; }
 [data-mode="motion"] .porch::before, [data-mode="motion"] .porch::after { display: none; }
-[data-mode="motion"] .porch__stage { position: sticky; top: 0; height: 100vh; max-width: none; overflow: hidden; }
+[data-mode="motion"] .porch__stage { position: sticky; top: 0; height: 100vh; max-width: none; overflow: hidden; overflow: clip; }
 [data-mode="motion"] .porch__back { display: block; position: absolute; top: 0; left: 0; height: 100%; will-change: transform; }
 .porch__frieze { position: absolute; top: 40px; left: 0; right: 0; height: 44px; background: var(--marble-shadow); border-top: 1px solid rgba(30,26,23,.2); border-bottom: 1px solid rgba(30,26,23,.2); display: flex; align-items: center; }
 .porch__frieze .meander { --m: 22px; width: 100%; opacity: .55; }
@@ -268,8 +268,8 @@ button { font: inherit; }
 [data-mode="motion"] .only-static { display: none; }
 
 [data-mode="motion"] .porch__track { display: block; position: absolute; top: 0; left: 0; height: 100%; margin: 0; will-change: transform; }
-[data-mode="motion"] .panel { position: absolute; top: clamp(96px, calc(50vh - 304px), 146px); width: 560px; }
-[data-mode="motion"] .panel__art { aspect-ratio: auto; height: 300px; max-height: none; }
+[data-mode="motion"] .panel { position: absolute; top: clamp(64px, calc(50vh - 304px), 146px); width: 560px; }
+[data-mode="motion"] .panel__art { aspect-ratio: auto; height: clamp(200px, calc(100vh - 380px), 300px); max-height: none; }
 [data-mode="stack"] .panel__art > .meander, [data-mode="motion"] .panel__art > .meander { --m: 14px; }
 [data-mode="stack"] .panel__art .motif, [data-mode="motion"] .panel__art .motif { top: 30px; bottom: 26px; left: 40px; right: 40px; }
 [data-mode="motion"] .panel__plaque { padding: 20px 26px 24px; box-shadow: 0 18px 30px -24px rgba(30,26,23,.5); }
@@ -345,7 +345,7 @@ button { font: inherit; }
 .footer__top:hover { color: var(--deep); }
 
 /* =========================================================
-   The open panel — a scroll that unrolls
+   The open panel: a scroll that unrolls
    ========================================================= */
 .sheet-wrap { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 24px 18px; }
 .sheet-wrap[hidden] { display: none; }
@@ -376,7 +376,7 @@ button { font: inherit; }
 .fact__v--orig { font-size: 15px; color: var(--muted); }
 .sheet__facts .quote { margin: 0; padding-left: 14px; }
 .sheet__facts .quote p { font-size: 14px; }
-.sheet__facts .quote cite { font-size: 12px; letter-spacing: .1em; }
+.sheet__facts .quote cite { font-size: 13px; letter-spacing: .1em; }
 
 .viewer { flex: 1.6 1 420px; min-width: 0; display: flex; flex-direction: column; border: 1px solid var(--ink); background: var(--marble-shadow); }
 .viewer__bar { height: 40px; flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 14px; background: var(--ink); color: var(--marble); font-size: 13px; }
@@ -437,7 +437,7 @@ button { font: inherit; }
   .hero__intro { font-size: 16px; line-height: 1.55; margin-top: 16px; }
   .hero .quote { margin-top: 20px; padding-left: 12px; }
   .hero .quote p { font-size: 14px; }
-  .hero .quote cite { font-size: 12px; letter-spacing: .1em; }
+  .hero .quote cite { font-size: 13px; letter-spacing: .1em; }
   .walk { margin-top: 28px; gap: 12px; font-size: 16px; letter-spacing: .18em; min-height: 44px; }
   .walk__arrow { width: 44px; height: 44px; font-size: 17px; }
   .walk__arrow::before { content: '↓'; }
@@ -473,3 +473,34 @@ button { font: inherit; }
   .agora__links { grid-template-columns: 1.3fr 1fr 1fr; }
   .agora__links a:first-child .agora__v { overflow-wrap: normal; white-space: nowrap; }
 }
+
+/* =========================================================
+   Short laptop windows (e.g. 1366x650, 1280x600 of page):
+   keep the porch walk, tighten the panels to fit.
+   ========================================================= */
+@media (max-height: 759px) {
+  [data-mode="motion"] .porch__head { top: 104px; }
+  [data-mode="motion"] .porch__head .display-l { font-size: 64px; }
+  [data-mode="motion"] .panel__plaque { padding: 16px 22px 18px; }
+  [data-mode="motion"] .panel__title { font-size: 30px; margin: 8px 0 4px; }
+  [data-mode="motion"] .panel__quote { display: none; } /* still shown in the open panel */
+  [data-mode="motion"] .panel__open { margin-top: 14px; min-height: 42px; }
+  [data-mode="motion"] .porch__floor { height: 84px; }
+  [data-mode="motion"] .porch__count { bottom: 22px; }
+}
+
+/* ---------- Bios column drums ---------- */
+.drum {
+  flex: none; width: var(--w); height: var(--h);
+  background: repeating-linear-gradient(90deg, #F7F3EC 0 8px, #D8CDBB 8px 10px);
+  box-shadow: inset -10px 0 12px -8px rgba(30,26,23,.35), inset 0 0 0 1px rgba(30,26,23,.2), inset 0 -1px 0 rgba(30,26,23,.22);
+}
+.drum--fine { background: repeating-linear-gradient(90deg, #F7F3EC 0 4px, #D8CDBB 4px 5px); box-shadow: inset -8px 0 10px -6px rgba(30,26,23,.35), inset 0 0 0 1px rgba(30,26,23,.2), inset 0 -1px 0 rgba(30,26,23,.22); }
+
+/* ---------- Entrance effects: hidden only while JS has an animation armed ---------- */
+.order.is-waiting .order__art > *,
+.order.is-waiting .order__kicker,
+.order.is-waiting .order__title,
+.order.is-waiting .order__text { opacity: 0; }
+.agora__title .ch { display: inline-block; }
+.agora__title.is-waiting .ch { opacity: 0; }

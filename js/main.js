@@ -15,7 +15,10 @@
         ['Key takeaway', 'Converted teaching experience to a replicable and consumable format for public use.']
       ],
       file: 'trikaenglish.vercel.app', hint: 'Screens',
-      shots: ['assets/img/trika-1.png', 'assets/img/trika-2.png'],
+      shots: [
+        { src: 'assets/img/trika-1.png', alt: 'Trika English on a phone: the list of numbered grammar stages, each with its lessons and practice sets' },
+        { src: 'assets/img/trika-2.png', alt: 'Trika English practice screens: arranging word tiles into negative sentences, then checking the answer' }
+      ],
       ext: { href: 'https://trikaenglish.vercel.app/', label: 'Visit site' }
     },
     {
@@ -115,7 +118,8 @@
   let center = 720;
   const computeMode = () => {
     if (window.innerWidth < 1100) return 'mobile';
-    if (isReduced() || window.innerHeight < 760) return 'stack';
+    // Short laptop windows (1280x600 of page) keep the walk; see the max-height CSS.
+    if (isReduced() || window.innerHeight < 560) return 'stack';
     return 'motion';
   };
 
@@ -221,13 +225,24 @@
     history.replaceState(null, '', a.getAttribute('href'));
   });
 
-  // ---------- Hover shimmer ----------
+  // ---------- Hover shimmer (hover-capable devices only) ----------
+  // Each drawing gets a pale-ochre copy of its incised lines, invisible at rest.
+  // Hovering fades those copies in and out line by line: opacity only, no stroke repaint.
+  const hoverMQ = window.matchMedia('(hover: hover)');
+  $$('.panel__art [data-incised]', track).forEach(g => {
+    const glint = g.cloneNode(true);
+    glint.removeAttribute('data-incised');
+    glint.setAttribute('data-glint', '');
+    glint.setAttribute('stroke', '#F6D9A0');
+    Array.from(glint.children).forEach(ln => { ln.style.opacity = '0'; });
+    g.after(glint);
+  });
   function shimmer(el, on) {
     (el.__anims || []).forEach(a => a.cancel());
     el.__anims = [];
-    if (!on || isReduced() || mode === 'mobile') return;
-    $$('[data-incised] > *', el).forEach((ln, i) => el.__anims.push(ln.animate(
-      [{ stroke: '#C1622F' }, { stroke: '#F6D9A0' }, { stroke: '#C1622F' }],
+    if (!on || isReduced() || !hoverMQ.matches) return;
+    $$('[data-glint] > *', el).forEach((ln, i) => el.__anims.push(ln.animate(
+      [{ opacity: 0 }, { opacity: 0.95 }, { opacity: 0 }],
       { duration: 1400, delay: i * 45, iterations: Infinity, easing: 'ease-in-out' })));
     const sh = $('.panel__sheen', el);
     if (sh) el.__anims.push(sh.animate([{ transform: 'translateX(-110%)' }, { transform: 'translateX(110%)' }], { duration: 1600, iterations: Infinity, easing: 'ease-in-out' }));
@@ -235,6 +250,20 @@
   panels.forEach(el => {
     el.addEventListener('mouseenter', () => shimmer(el, true));
     el.addEventListener('mouseleave', () => shimmer(el, false));
+  });
+
+  // ---------- Keyboard: walk the porch to a focused panel ----------
+  // The stage is clipped, so the browser cannot bring an off-screen panel into
+  // view itself. Scroll the page to the point where that panel is centred.
+  const stage = $('.porch__stage');
+  stage.addEventListener('scroll', () => { stage.scrollLeft = 0; stage.scrollTop = 0; });
+  track.addEventListener('focusin', e => {
+    if (mode !== 'motion') return;
+    const el = e.target.closest('.panel');
+    if (!el) return;
+    const i = panels.indexOf(el);
+    const top = docTop(porch) + LEAD + i * S;
+    if (Math.abs(window.scrollY - top) > 2) window.scrollTo({ top, behavior: isReduced() ? 'auto' : 'smooth' });
   });
 
   // ---------- Intro: the porch assembles ----------
@@ -271,8 +300,8 @@
     $('.viewer__file', wrap).textContent = p.file;
     $('.viewer__hint', wrap).textContent = p.pdf ? 'PDF' : (p.hint || '');
     viewerArea.innerHTML = p.pdf
-      ? `<iframe src="${p.pdf}#navpanes=0&view=FitH" title="${esc(p.title)} (PDF)" loading="lazy"></iframe>`
-      : `<div class="viewer__shots">${p.shots.map((s, i) => `<img src="${s}" alt="${esc(p.title)} screen ${i + 1}">`).join('')}</div>`;
+      ? `<iframe src="${p.pdf}#navpanes=0&view=FitH" title="${esc(p.title)} (PDF)" tabindex="-1" loading="lazy"></iframe>`
+      : `<div class="viewer__shots">${p.shots.map(s => `<img src="${s.src}" alt="${esc(s.alt)}">`).join('')}</div>`;
     const ext = p.pdf ? { href: p.pdf, label: 'Open PDF' } : p.ext;
     extBtn.href = ext.href;
     extBtn.innerHTML = `${esc(ext.label)} <span class="arr">↗</span>`;
@@ -335,7 +364,7 @@
     if (openIdx == null) return;
     if (e.key === 'Escape') { e.preventDefault(); closePanel(); return; }
     if (e.key === 'Tab') {
-      const f = $$('a[href], button, iframe, [tabindex]:not([tabindex="-1"])', sheet).filter(el => el.offsetParent !== null);
+      const f = $$('a[href], button, [tabindex]:not([tabindex="-1"])', sheet).filter(el => el.offsetParent !== null);
       if (!f.length) return;
       const first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
@@ -343,10 +372,72 @@
     }
   });
 
+  // ---------- Entrances: Bios columns build up, Agora is carved ----------
+  // Elements are hidden only once an observer is armed, so no-JS and
+  // reduced-motion visitors always see everything.
+  const orders = $$('#bios .order');
+  const agoraTitle = $('.agora__title');
+  const observers = [];
+
+  function buildOrder(order, d0) {
+    order.classList.remove('is-waiting');
+    // Base first, then plinth, drums bottom to top, then the capital.
+    const pieces = Array.from($('.order__art', order).children).reverse();
+    pieces.forEach((p, i) => p.animate(
+      [{ opacity: 0, transform: 'translateY(-18px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 420, delay: d0 + i * 85, easing: EASE, fill: 'backwards' }));
+    const t0 = d0 + pieces.length * 85 + 260;
+    $$('.order__kicker, .order__title, .order__text', order).forEach((el, i) => el.animate(
+      [{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }],
+      { duration: 600, delay: t0 + i * 120, easing: EASE, fill: 'backwards' }));
+  }
+
+  function carveAgora() {
+    agoraTitle.classList.remove('is-waiting');
+    $$('.ch', agoraTitle).forEach((ch, i) => ch.animate(
+      [{ opacity: 0, transform: 'translateY(-10px) scale(1.18)' },
+       { opacity: 1, transform: 'translateY(1px) scale(.97)', offset: .7 },
+       { opacity: 1, transform: 'none' }],
+      { duration: 520, delay: 150 + i * 150, easing: 'cubic-bezier(.3,.7,.3,1)', fill: 'backwards' }));
+  }
+
+  function revealAll() {
+    observers.forEach(o => o.disconnect());
+    orders.forEach(o => o.classList.remove('is-waiting'));
+    agoraTitle.classList.remove('is-waiting');
+  }
+
+  function armEntrances() {
+    if (isReduced() || !('IntersectionObserver' in window)) return;
+
+    orders.forEach(o => o.classList.add('is-waiting'));
+    const bioIO = new IntersectionObserver(entries => {
+      // Columns entering together (desktop) build one after another.
+      entries.filter(e => e.isIntersecting).forEach((e, n) => {
+        bioIO.unobserve(e.target);
+        buildOrder(e.target, n * 260);
+      });
+    }, { threshold: 0.35 });
+    orders.forEach(o => bioIO.observe(o));
+    observers.push(bioIO);
+
+    const text = agoraTitle.textContent;
+    agoraTitle.innerHTML = Array.from(text).map(c => `<span class="ch" aria-hidden="true">${esc(c)}</span>`).join('');
+    agoraTitle.classList.add('is-waiting');
+    const agoraIO = new IntersectionObserver(entries => {
+      if (!entries.some(e => e.isIntersecting)) return;
+      agoraIO.disconnect();
+      carveAgora();
+    }, { threshold: 0.6 });
+    agoraIO.observe(agoraTitle);
+    observers.push(agoraIO);
+  }
+
   // ---------- Boot ----------
   layout();
   update();
   playIntro();
+  armEntrances();
   window.addEventListener('scroll', requestUpdate, { passive: true });
   let rt = 0;
   window.addEventListener('resize', () => {
@@ -358,7 +449,7 @@
       update();
     }, 120);
   });
-  reducedMQ.addEventListener && reducedMQ.addEventListener('change', () => { layout(); active = -1; update(); });
+  reducedMQ.addEventListener && reducedMQ.addEventListener('change', () => { if (isReduced()) revealAll(); layout(); active = -1; update(); });
   // Fonts shift layout slightly; recompute once they land.
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(requestUpdate);
 })();
