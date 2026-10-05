@@ -1,18 +1,18 @@
-/* Stoa Poikile — The Painted Porch
+/* Stoa Poikile: The Painted Porch
    Porch walk, panel lighting, nav, intro, and the scroll that unrolls. */
 (() => {
   'use strict';
 
-  // ---------- Content ----------
+  // ---------- Content (open-panel facts are verbatim from content.md) ----------
   const PANELS = [
     {
       n: 'I', kind: 'scroll', title: 'Trika English',
       line: 'A digital platform for mastering English: cost-effective, self-reliant and straightforward.',
-      quote: '“Men learn while they teach.”', src: 'Seneca · Moral Letters 7 · tr. Gummere',
+      quote: '"Men learn while they teach."', src: 'Seneca, Moral Letters 7, tr. Gummere',
       facts: [
         ['What it is', 'Digital platform designed to help learners master English through a cost-effective, self-reliant and straightforward approach.'],
-        ['My part', 'Researched learning methods and designed and coded the entire website.'],
-        ['Key takeaway', 'Converted teaching experience into a replicable, consumable format for public use.']
+        ['My part', 'Researched learning methods and designed/coded the entire website.'],
+        ['Key takeaway', 'Converted teaching experience to a replicable and consumable format for public use.']
       ],
       file: 'trikaenglish.vercel.app', hint: 'Screens',
       shots: ['assets/img/trika-1.png', 'assets/img/trika-2.png'],
@@ -20,35 +20,34 @@
     },
     {
       n: 'II', kind: 'ship', title: 'ASEAN Trade',
-      line: 'How exchange rates and interest rates moved ASEAN trade balances, 2010–2024.',
+      line: 'The impact of exchange rates and interest rates on ASEAN trade balances, 2010-2024.',
       facts: [
-        ['What it is', 'The Impact of Exchange Rates and Interest Rates on ASEAN Trade Balances, 2010–2024.'],
+        ['English title', 'The Impact of Exchange Rates and Interest Rates on ASEAN Trade Balances, 2010-2024'],
         ['Original title', 'TÁC ĐỘNG CỦA TỶ GIÁ VÀ LÃI SUẤT ĐẾN CÁN CÂN THƯƠNG MẠI CỦA ASEAN GIAI ĐOẠN 2010-2024', 'orig'],
-        ['My part', 'Team of five. I did the initial research on past papers.'],
+        ['Team size and my part', 'A team of five members, with myself included. I did the initial research on past papers.'],
         ['Key finding', 'Exchange rates have a directly positive correlation with trade equilibrium, while inflation held the opposite correlation with lower confidence.']
       ],
       file: 'asean-trade-balance.pdf', pdf: 'assets/pdf/asean-trade-balance.pdf'
     },
     {
       n: 'III', kind: 'sun', title: 'Abenomics',
-      line: 'Monetary and fiscal policy coordination in Japan, 2013, and what it means for Vietnam.',
+      line: 'Monetary and fiscal policy coordination in Japan, 2013, and policy implications for Vietnam.',
       facts: [
-        ['What it is', 'Monetary and Fiscal Policy Coordination under Abenomics in Japan (2013) and Policy Implications for Vietnam.'],
+        ['English title', 'Monetary and Fiscal Policy Coordination under Abenomics in Japan (2013) and Policy Implications for Vietnam'],
         ['Original title', 'ẢNH HƯỞNG CỦA SỰ PHỐI HỢP GIỮA CHÍNH SÁCH TIỀN TỆ VÀ CHÍNH SÁCH TÀI KHOÁ TRONG HỆ THỐNG CHÍNH SÁCH ABENOMICS TẠI NHẬT BẢN TRONG NĂM 2013 VÀ HÀM Ý CHÍNH SÁCH CHO VIỆT NAM', 'orig'],
-        ['My part', 'Team of five. I did the main research and the presentation.'],
-        ['Key finding', 'The policy mix had an immediate effect in Japan, though it diminished in the long term.']
+        ['Team size and my part', 'A team of five members, with myself included. I did the main research and the presentation.'],
+        ['Key finding', 'Policy mix had an immediate effect in Japan, though it diminished in the long term.']
       ],
       file: 'abenomics.pdf', pdf: 'assets/pdf/abenomics.pdf'
     },
     {
       n: 'IV', kind: 'pig', title: 'Piggy',
       line: 'A digital wallet that lets parents teach their children personal finance.',
-      quote: '“There are things which are within our power, and there are things which are beyond our power.”', src: 'Epictetus · Enchiridion 1 · tr. Higginson',
+      quote: '"There are things which are within our power, and there are things which are beyond our power."', src: 'Epictetus, Enchiridion 1, tr. Thomas W. Higginson',
       facts: [
         ['What it is', 'A digital wallet that lets parents educate their children on personal finance.'],
-        ['Context', 'DTI100: Design Thinking and Innovation, final project. My own idea, built with a team of five.'],
-        ['My part', 'Came up with the idea and designed the demo.'],
-        ['Key idea', 'Solves parents’ anxiety about giving their children cash, and children’s inconvenience of not being able to purchase online.']
+        ['Context', 'DTI100: Design Thinking and Innovation / Final Project / own idea, a team of five, my part: coming up with the idea and designing the demo.'],
+        ['Key idea', "Solving parents' anxiety of giving their children cash and children's inconvenience of not being able to purchase online."]
       ],
       file: 'piggy-pitch.pdf', pdf: 'assets/pdf/piggy-pitch.pdf'
     }
@@ -272,7 +271,7 @@
     $('.viewer__file', wrap).textContent = p.file;
     $('.viewer__hint', wrap).textContent = p.pdf ? 'PDF' : (p.hint || '');
     viewerArea.innerHTML = p.pdf
-      ? `<iframe src="${p.pdf}#navpanes=0&view=FitH" title="${esc(p.title)} — PDF" loading="lazy"></iframe>`
+      ? `<iframe src="${p.pdf}#navpanes=0&view=FitH" title="${esc(p.title)} (PDF)" loading="lazy"></iframe>`
       : `<div class="viewer__shots">${p.shots.map((s, i) => `<img src="${s}" alt="${esc(p.title)} screen ${i + 1}">`).join('')}</div>`;
     const ext = p.pdf ? { href: p.pdf, label: 'Open PDF' } : p.ext;
     extBtn.href = ext.href;
